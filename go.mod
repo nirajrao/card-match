@@ -1,3 +1,3 @@
-module memory_match
+module card-match
 
 go 1.17
