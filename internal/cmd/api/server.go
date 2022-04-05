@@ -13,8 +13,8 @@ type server struct {
 	applicationServer *http.Server
 }
 
-func NewServer() *server {
-	applicationServer := NewApplicationServer(8080)
+func NewServer(config *Config) *server {
+	applicationServer := NewApplicationServer(config.applicationServerPort)
 
 	return &server{
 		applicationServer: applicationServer,
@@ -22,7 +22,7 @@ func NewServer() *server {
 
 }
 
-func (s *server) StartApplicationServer() {
+func (s *server) StartApplicationServer() error {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
@@ -31,5 +31,5 @@ func (s *server) StartApplicationServer() {
 		s.applicationServer.Shutdown(context.Background())
 	}()
 
-	s.applicationServer.ListenAndServe()
+	return s.applicationServer.ListenAndServe()
 }
