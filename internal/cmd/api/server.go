@@ -22,6 +22,14 @@ func NewServer(config *Config) *server {
 
 }
 
+func NewDefaultServer() *server {
+	applicationServer := NewApplicationServer(8080)
+
+	return &server{
+		applicationServer: applicationServer,
+	}
+}
+
 func (s *server) StartApplicationServer() error {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
